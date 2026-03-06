@@ -12,7 +12,7 @@ include:
     ref: v25.0.0
 
 variables:
-  RENOVATE_EXTRA_FLAGS: '--autodiscover=true --autodiscover-filter=haproxy-template-ic/*'
+  RENOVATE_EXTRA_FLAGS: '--autodiscover=true --autodiscover-filter=haproxy-haptic/*'
 
 # Monthly token rotation to prevent expiration
 rotate-token:
@@ -25,7 +25,7 @@ rotate-token:
       # Self-rotate using the API (requires api or self_rotate scope)
       NEW_TOKEN=$(curl --silent --fail --request POST \
         --header "PRIVATE-TOKEN: ${RENOVATE_TOKEN}" \
-        "${CI_API_V4_URL}/groups/haproxy-template-ic/access_tokens/self/rotate" \
+        "${CI_API_V4_URL}/groups/haproxy-haptic/access_tokens/self/rotate" \
         | jq -r '.token')
 
       if [ -z "$NEW_TOKEN" ] || [ "$NEW_TOKEN" = "null" ]; then
