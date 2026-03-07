@@ -23,13 +23,14 @@ rotate-token:
   script:
     - |
       # Self-rotate using the API (requires api or self_rotate scope)
-      NEW_TOKEN=$(curl --silent --fail --request POST \
+      RESPONSE=$(curl --silent --fail --request POST \
         --header "PRIVATE-TOKEN: ${RENOVATE_TOKEN}" \
-        "${CI_API_V4_URL}/groups/haproxy-haptic/access_tokens/self/rotate" \
-        | jq -r '.token')
+        "${CI_API_V4_URL}/groups/haproxy-haptic/access_tokens/self/rotate")
 
-      if [ -z "$NEW_TOKEN" ] || [ "$NEW_TOKEN" = "null" ]; then
-        echo "ERROR: Failed to rotate token"
+      NEW_TOKEN=$(echo "${RESPONSE}" | sed 's/.*"token":"\([^"]*\)".*/\1/')
+
+      if [ -z "$NEW_TOKEN" ] || [ "$NEW_TOKEN" = "$RESPONSE" ]; then
+        echo "ERROR: Failed to extract token from response"
         exit 1
       fi
 
