@@ -1,6 +1,6 @@
 # Renovate Runner
 
-Centralized Renovate Bot runner for the `haproxy-template-ic` GitLab group.
+Centralized Renovate Bot runner for the `haproxy-haptic` GitLab group.
 
 ## Overview
 
@@ -8,7 +8,7 @@ This project runs [Renovate](https://docs.renovatebot.com/) on a schedule to aut
 
 ## Configuration
 
-The runner uses the official [renovate-bot/renovate-runner](https://gitlab.com/renovate-bot/renovate-runner) templates with autodiscover enabled for the `haproxy-template-ic/*` group.
+The runner uses the official [renovate-bot/renovate-runner](https://gitlab.com/renovate-bot/renovate-runner) templates with autodiscover enabled for the `haproxy-haptic/*` group.
 
 ### CI/CD Variables
 
@@ -24,7 +24,7 @@ The runner uses the official [renovate-bot/renovate-runner](https://gitlab.com/r
 
 ## Adding Renovate to a Repository
 
-Repositories in the `haproxy-template-ic` group are automatically discovered. To configure Renovate behavior, add a `renovate.json` to the repository root:
+Repositories in the `haproxy-haptic` group are automatically discovered. To configure Renovate behavior, add a `renovate.json` to the repository root:
 
 ```json
 {
