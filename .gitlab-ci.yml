@@ -1,3 +1,11 @@
+spec:
+  inputs:
+    rotate_token:
+      type: boolean
+      default: false
+      description: "Set to true to rotate the Renovate access token"
+---
+
 include:
   - project: 'renovate-bot/renovate-runner'
     file: '/templates/renovate.gitlab-ci.yml'
@@ -11,7 +19,7 @@ rotate-token:
   stage: .pre
   image: curlimages/curl:latest
   rules:
-    - if: $ROTATE_TOKEN == "true"
+    - if: '"$[[ inputs.rotate_token ]]" == "true"'
   script:
     - |
       # Self-rotate using the API (requires api or self_rotate scope)
