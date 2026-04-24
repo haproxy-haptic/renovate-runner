@@ -22,9 +22,14 @@ rotate-token:
     - if: '"$[[ inputs.rotate_token ]]" == "true"'
   script:
     - |
-      # Self-rotate using the API (requires api or self_rotate scope)
+      # Self-rotate using the API (requires api or self_rotate scope).
+      # GitLab defaults expires_at to 7 days when omitted, so we must set it
+      # explicitly — otherwise each monthly rotation issues a token that
+      # silently dies a week later.
+      EXPIRES_AT=$(date -u -d '+90 days' +%Y-%m-%d)
       RESPONSE=$(curl --silent --fail --request POST \
         --header "PRIVATE-TOKEN: ${RENOVATE_TOKEN}" \
+        --form "expires_at=${EXPIRES_AT}" \
         "${CI_API_V4_URL}/groups/haproxy-haptic/access_tokens/self/rotate")
 
       NEW_TOKEN=$(echo "${RESPONSE}" | sed 's/.*"token":"\([^"]*\)".*/\1/')
@@ -33,6 +38,8 @@ rotate-token:
         echo "ERROR: Failed to extract token from response"
         exit 1
       fi
+
+      echo "New token expires at ${EXPIRES_AT}"
 
       # Update the CI/CD variable with the new token
       curl --silent --fail --request PUT \
