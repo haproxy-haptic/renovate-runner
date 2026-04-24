@@ -24,14 +24,16 @@ The runner uses the official [renovate-bot/renovate-runner](https://gitlab.com/r
 
 ## Adding Renovate to a Repository
 
-Repositories in the `haproxy-haptic` group are automatically discovered. To configure Renovate behavior, add a `renovate.json` to the repository root:
+Repositories in the `haproxy-haptic` group are automatically discovered. To inherit the group-wide Renovate policy (auto-merge for non-major updates, dependency dashboard, semantic commits, etc.), extend the shared preset shipped from this repo:
 
 ```json
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended"]
+  "extends": ["gitlab>haproxy-haptic/renovate-runner"]
 }
 ```
+
+Repo-specific `packageRules`, `customManagers`, and overrides can be added alongside the `extends` line. The preset itself is `default.json` at the root of this repo.
 
 ## License
 
