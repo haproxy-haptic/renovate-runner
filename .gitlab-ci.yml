@@ -14,6 +14,20 @@ include:
 variables:
   RENOVATE_EXTRA_FLAGS: '--autodiscover=true --autodiscover-filter=haproxy-haptic/*'
 
+# Opt this project into MR-event pipelines. The upstream renovate job is
+# gated on `$CI_PIPELINE_SOURCE == "schedule"` only (see the
+# renovate-bot/renovate-runner README: "By default our pipeline only runs
+# on schedules"). GitLab's MR-pipeline contract requires a rule matching
+# `merge_request_event` to live in the project's own .gitlab-ci.yml —
+# rules supplied through `include:` do not count. Without this override,
+# renovate-bot bump MRs never produce a pipeline, so the group-level
+# `Pipelines must succeed` gate deadlocks `platformAutomerge` (configured
+# in default.json) and bumps accumulate open.
+renovate:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+
 # Monthly token rotation to prevent expiration
 rotate-token:
   stage: .pre
