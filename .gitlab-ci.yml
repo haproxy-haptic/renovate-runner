@@ -9,7 +9,7 @@ spec:
 include:
   - project: 'renovate-bot/renovate-runner'
     file: '/templates/renovate.gitlab-ci.yml'
-    ref: v26.0.1
+    ref: v26.1.0
 
 variables:
   RENOVATE_EXTRA_FLAGS: '--autodiscover=true --autodiscover-filter=haproxy-haptic/*'
