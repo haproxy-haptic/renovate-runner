@@ -40,7 +40,9 @@ rotate-token:
       # GitLab defaults expires_at to 7 days when omitted, so we must set it
       # explicitly — otherwise each monthly rotation issues a token that
       # silently dies a week later.
-      EXPIRES_AT=$(date -u -d '+90 days' +%Y-%m-%d)
+      # Epoch arithmetic, not `-d '+90 days'`: this image is BusyBox, whose date
+      # rejects GNU relative formats. `-d @<epoch>` works in both.
+      EXPIRES_AT=$(date -u -d "@$(( $(date -u +%s) + 7776000 ))" +%Y-%m-%d)
       RESPONSE=$(curl --silent --fail --request POST \
         --header "PRIVATE-TOKEN: ${RENOVATE_TOKEN}" \
         --form "expires_at=${EXPIRES_AT}" \
