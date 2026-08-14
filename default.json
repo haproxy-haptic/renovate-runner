@@ -9,17 +9,32 @@
   "labels": [
     "dependencies"
   ],
+  "timezone": "Europe/Berlin",
   "platformAutomerge": true,
+  "minimumReleaseAge": "3 days",
+  "osvVulnerabilityAlerts": true,
   "packageRules": [
     {
-      "description": "Auto-merge non-major updates across the haproxy-haptic group",
+      "description": "One automerged MR per repo per week for every non-major update. Renovate only bundles updates it finds in the same run, so the weekly window — not the grouping alone — is what collapses the MR count. A repo that sets its own groupName (haptic's kubernetes/haproxy/spoa bundles) keeps a separate MR and inherits this schedule.",
       "matchUpdateTypes": [
         "minor",
         "patch",
         "pin",
         "digest"
       ],
+      "groupName": "non-major dependencies",
+      "schedule": [
+        "* 0-6 * * 1"
+      ],
       "automerge": true
+    },
+    {
+      "description": "Packages this group publishes itself skip the soak — minimumReleaseAge guards against a compromised third-party release and buys nothing here, while delaying an internal fix reaching its consumer.",
+      "matchPackageNames": [
+        "gitlab.com/haproxy-haptic/{/,}**",
+        "haproxy-haptic/{/,}**"
+      ],
+      "minimumReleaseAge": null
     }
   ]
 }
