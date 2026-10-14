@@ -1,0 +1,41 @@
+name: Renovate
+'on':
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: renovate
+  cancel-in-progress: false
+jobs:
+  renovate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    steps:
+      - id: token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ vars.RENOVATE_APP_ID }}
+          private-key: ${{ secrets.RENOVATE_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+      - uses: renovatebot/github-action@230ce922b08968d0a4f6f70f295601daff09ef1d # v46.3.7
+        with:
+          renovate-image: ghcr.io/renovatebot/renovate:44.149.3@sha256:11431b10c52c306bb280171f80d409e1fb482e5a61a845cfef93f34b4d649d5d
+          token: ${{ steps.token.outputs.token }}
+        env:
+          LOG_LEVEL: info
+          RENOVATE_LOG_FILE: /tmp/renovate-log.ndjson
+          RENOVATE_LOG_FILE_LEVEL: debug
+          RENOVATE_AUTODISCOVER: 'true'
+          RENOVATE_AUTODISCOVER_FILTER: ${{ github.repository_owner }}/*
+          RENOVATE_ONBOARDING: 'false'
+          RENOVATE_REQUIRE_CONFIG: required
+          RENOVATE_PLATFORM_COMMIT: enabled
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: renovate-log
+          path: /tmp/renovate-log.ndjson
+          retention-days: 7
+          if-no-files-found: error
