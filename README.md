@@ -24,3 +24,14 @@ gh workflow run renovate.yml --repo haproxy-haptic/renovate-runner
 
 Updates to this runner's own pins never merge automatically; review them before
 merging, because the runner holds the app's private key.
+
+## Shared preset
+
+`default.json` is the group-wide policy: weekly automerged non-major updates,
+the dependency dashboard, and semantic commits. Repositories inherit it with:
+
+```json
+{
+  "extends": ["github>haproxy-haptic/renovate-runner"]
+}
+```

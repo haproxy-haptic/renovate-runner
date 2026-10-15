@@ -1,0 +1,42 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard",
+    ":semanticCommits",
+    ":separateMajorReleases"
+  ],
+  "labels": [
+    "dependencies"
+  ],
+  "timezone": "Europe/Berlin",
+  "platformAutomerge": true,
+  "minimumReleaseAge": "3 days",
+  "osvVulnerabilityAlerts": true,
+  "packageRules": [
+    {
+      "description": "One automerged PR per repo per week for every non-major update. Renovate only bundles updates it finds in the same run, so the weekly window \u2014 not the grouping alone \u2014 is what collapses the MR count. A repo that sets its own groupName (haptic's kubernetes/haproxy/spoa bundles) keeps a separate PR and inherits this schedule.",
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ],
+      "groupName": "non-major dependencies",
+      "schedule": [
+        "* 0-6 * * 1"
+      ],
+      "automerge": true
+    },
+    {
+      "description": "Packages this group publishes itself skip the soak \u2014 minimumReleaseAge guards against a compromised third-party release and buys nothing here, while delaying an internal fix reaching its consumer.",
+      "matchPackageNames": [
+        "github.com/haproxy-haptic/{/,}**",
+        "gitlab.com/haproxy-haptic/{/,}**",
+        "haproxy-haptic/{/,}**",
+        "ghcr.io/haproxy-haptic/{/,}**"
+      ],
+      "minimumReleaseAge": null
+    }
+  ]
+}
