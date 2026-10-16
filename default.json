@@ -32,7 +32,6 @@
       "description": "Packages this group publishes itself skip the soak \u2014 minimumReleaseAge guards against a compromised third-party release and buys nothing here, while delaying an internal fix reaching its consumer.",
       "matchPackageNames": [
         "github.com/haproxy-haptic/{/,}**",
-        "gitlab.com/haproxy-haptic/{/,}**",
         "haproxy-haptic/{/,}**",
         "ghcr.io/haproxy-haptic/{/,}**"
       ],
